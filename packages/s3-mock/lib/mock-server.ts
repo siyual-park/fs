@@ -3,8 +3,8 @@ import uniqid from "uniqid";
 import path from "path";
 import S3rver from "s3rver";
 import makeDir from "make-dir";
-import getPort from "get-port";
 import del from "del";
+import getPort from "get-port";
 
 import { Resource } from "@internal/test-helper";
 

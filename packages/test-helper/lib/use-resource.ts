@@ -1,6 +1,8 @@
 import Resource from "./resource";
 
-function useResource(resource: Resource, initAll = true) {
+function useResource(resource: Resource, config?: { initAll?: boolean }): void {
+  const initAll = config?.initAll ?? true;
+
   if (initAll) {
     beforeAll(async () => {
       await resource.init();
