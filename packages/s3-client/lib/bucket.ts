@@ -9,7 +9,7 @@ import S3Error from "./s3-error";
 type OmitBucket<T> = Omit<T, "Bucket">;
 
 class Bucket {
-  constructor(public readonly s3: AWS.S3, public readonly bucketName: string) {}
+  constructor(private readonly s3: AWS.S3, public readonly name: string) {}
 
   async delete(
     params: OmitBucket<AWS.S3.Types.DeleteObjectRequest>
@@ -17,7 +17,7 @@ class Bucket {
     try {
       return await this.s3
         .deleteObject({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .promise();
@@ -57,7 +57,7 @@ class Bucket {
     try {
       return await this.s3
         .deleteObjects({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .promise();
@@ -72,7 +72,7 @@ class Bucket {
     try {
       return await this.s3
         .listObjectsV2({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .promise();
@@ -87,7 +87,7 @@ class Bucket {
     try {
       return await this.s3
         .getObject({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .promise();
@@ -102,7 +102,7 @@ class Bucket {
     try {
       return this.s3
         .getObject({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .createReadStream();
@@ -117,9 +117,9 @@ class Bucket {
     try {
       return await this.s3
         .copyObject({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
-          CopySource: `/${this.bucketName}/${params.CopySource}`,
+          CopySource: `/${this.name}/${params.CopySource}`,
         })
         .promise();
     } catch (e: unknown) {
@@ -133,7 +133,7 @@ class Bucket {
     try {
       return await this.s3
         .headObject({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .promise();
@@ -148,7 +148,7 @@ class Bucket {
     try {
       return await this.s3
         .upload({
-          Bucket: this.bucketName,
+          Bucket: this.name,
           ...params,
         })
         .promise();
@@ -162,7 +162,7 @@ class Bucket {
   ): Promise<string | undefined> {
     try {
       return await this.s3.getSignedUrlPromise("getObject", {
-        Bucket: this.bucketName,
+        Bucket: this.name,
         ...params,
       });
     } catch (e) {
