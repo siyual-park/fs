@@ -24,9 +24,9 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
+    "@internal/test-helper": "^0.0.0",
     "@types/s3rver": "^3.7.0",
-    "@types/uniqid": "^5.3.1",
-    "@internal/test-helper": "^0.0.0"
+    "@types/uniqid": "^5.3.1"
   },
   "peerDependencies": {
     "@internal/test-helper": "^0.0.0"
