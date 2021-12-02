@@ -20,6 +20,9 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.177"
+    "@internal/s3-mock": "^0.0.0",
+    "@types/lodash": "^4.14.177",
+    "@types/uniqid": "^5.3.1",
+    "uniqid": "^5.3.0"
   }
 }
