@@ -3,11 +3,13 @@ name: Test CI
 on:
   push:
     branches:
+      - 'main'
       - 'master'
       - 'develop'
       - 'release'
   pull_request:
     branches:
+      - 'main'
       - 'master'
       - 'develop'
       - 'release'
