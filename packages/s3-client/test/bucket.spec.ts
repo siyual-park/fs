@@ -133,3 +133,38 @@ test("copy", async () => {
 
   expect(result != null).toBeTruthy();
 });
+
+test("delete", async () => {
+  const key = uniqid();
+
+  await bucket.upload({
+    Key: key,
+    Body: JSON.stringify({ id: key }),
+  });
+
+  const result = await bucket.delete({
+    Key: key
+  });
+
+  expect(result != null).toBeTruthy();
+});
+
+
+test("deleteMany", async () => {
+  const key = uniqid();
+
+  await bucket.upload({
+    Key: key,
+    Body: JSON.stringify({ id: key }),
+  });
+
+  const result = await bucket.deleteMany({
+    Delete: {
+      Objects: [{
+        Key: key
+      }]
+    }
+  });
+
+  expect(result != null).toBeTruthy();
+});
