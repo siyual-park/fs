@@ -22,7 +22,7 @@ class MockBucket implements Resource {
 
   private async existBucket(): Promise<boolean> {
     const { Buckets: buckets } = await this.s3.listBuckets().promise();
-    return buckets?.some((bucket) => bucket.Name === bucket) ?? false;
+    return buckets?.some((bucket) => bucket.Name === this.bucketName) ?? false;
   }
 }
 

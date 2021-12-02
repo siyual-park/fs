@@ -14,7 +14,7 @@ class MockServer implements Resource {
     port: NaN,
     hostname: "127.0.0.1",
     silent: false,
-    directory: path.join(__dirname, `../tmp/${uniqid}`),
+    directory: path.join(__dirname, `../tmp/${uniqid()}`),
   };
 
   private s3Server: S3rver | undefined;

@@ -6,7 +6,7 @@ const mockServer = new MockServer();
 useResource(mockServer, { initAll: false });
 
 describe("MockServer", () => {
-  test("clientConfig", async () => {
+  test("server initialized", async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     mockServer.clientConfig;
   });
