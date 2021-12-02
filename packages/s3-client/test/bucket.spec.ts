@@ -143,12 +143,11 @@ test("delete", async () => {
   });
 
   const result = await bucket.delete({
-    Key: key
+    Key: key,
   });
 
   expect(result != null).toBeTruthy();
 });
-
 
 test("deleteMany", async () => {
   const key = uniqid();
@@ -160,10 +159,12 @@ test("deleteMany", async () => {
 
   const result = await bucket.deleteMany({
     Delete: {
-      Objects: [{
-        Key: key
-      }]
-    }
+      Objects: [
+        {
+          Key: key,
+        },
+      ],
+    },
   });
 
   expect(result != null).toBeTruthy();
