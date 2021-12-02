@@ -135,17 +135,30 @@ class Bucket {
   async copy(
     params: OmitBucket<AWS.S3.Types.CopyObjectRequest>
   ): Promise<AWS.S3.CopyObjectOutput> {
+    let copySource = params.CopySource;
+    if (!Bucket.isAccessPoint(copySource) && !Bucket.hasBucket(copySource)) {
+      copySource = `/${this.name}/${params.CopySource}`;
+    }
+
     try {
       return await this.s3
         .copyObject({
           Bucket: this.name,
           ...params,
-          CopySource: `/${this.name}/${params.CopySource}`,
+          CopySource: copySource,
         })
         .promise();
     } catch (e: unknown) {
       throw new S3Error(e as AWSError);
     }
+  }
+
+  private static isAccessPoint(key: string): boolean {
+    return key.startsWith("arn:aws:s3-outposts:");
+  }
+
+  private static hasBucket(key: string): boolean {
+    return key.includes("/", 1);
   }
 
   async head(
