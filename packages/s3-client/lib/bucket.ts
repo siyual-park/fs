@@ -2,6 +2,12 @@
 
 import * as stream from "stream";
 import AWS, { AWSError } from "aws-sdk";
+import {
+  DeletedObjects,
+  DeleteObjectsOutput,
+  Errors,
+  RequestCharged,
+} from "aws-sdk/clients/s3";
 import _ from "lodash";
 
 import S3Error from "./s3-error";
@@ -30,40 +36,55 @@ class Bucket {
    * 한 request 당 1000개 까지 처리 가능
    * https://stackoverflow.com/questions/45727244/malformedxml-the-xml-you-provided-was-not-well-formed-or-did-not-validate-again
    * */
-  async deleteManyIn(
-    identifierList: AWS.S3.Types.ObjectIdentifierList
-  ): Promise<void> {
-    if (identifierList.length === 0) return;
+  async deleteMany(
+    params: OmitBucket<AWS.S3.Types.DeleteObjectsRequest>
+  ): Promise<DeleteObjectsOutput> {
+    const { Delete } = params;
+    const { Objects: identifierList } = Delete;
 
     const partialIdentifierList: AWS.S3.Types.ObjectIdentifierList[] = _.chunk(
       identifierList,
       1000
     );
 
-    await Promise.all(
-      partialIdentifierList.map((partition) =>
-        this.deleteMany({
-          Delete: {
-            Objects: partition,
-          },
-        })
-      )
+    const result = await Promise.all(
+      partialIdentifierList.map(async (partition) => {
+        try {
+          return await this.s3
+            .deleteObjects({
+              Bucket: this.name,
+              ...params,
+              Delete: {
+                ...Delete,
+                Objects: partition,
+              },
+            })
+            .promise();
+        } catch (e: unknown) {
+          throw new S3Error(e as AWSError);
+        }
+      })
     );
-  }
 
-  async deleteMany(
-    params: OmitBucket<AWS.S3.Types.DeleteObjectsRequest>
-  ): Promise<AWS.S3.DeleteObjectsOutput> {
-    try {
-      return await this.s3
-        .deleteObjects({
-          Bucket: this.name,
-          ...params,
-        })
-        .promise();
-    } catch (e: unknown) {
-      throw new S3Error(e as AWSError);
-    }
+    const deleted: DeletedObjects = [];
+    let requestCharged: RequestCharged | undefined = undefined;
+    const errors: Errors = [];
+
+    result.forEach((output) => {
+      if (output.Deleted != null) {
+        deleted.push(...output.Deleted);
+      }
+      requestCharged = output.RequestCharged;
+      if (output.Errors != null) {
+        errors.push(...output.Errors);
+      }
+    });
+
+    return {
+      Deleted: deleted.length === 0 ? undefined : deleted,
+      RequestCharged: requestCharged,
+      Errors: errors.length === 0 ? undefined : errors,
+    };
   }
 
   async list(
