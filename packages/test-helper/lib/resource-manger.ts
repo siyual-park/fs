@@ -3,7 +3,7 @@ import Resource from "./resource";
 class ResourceManager implements Resource {
   private readonly resources: Resource[] = [];
 
-  use(...resources: Resource[]) {
+  use(...resources: Resource[]): void {
     this.resources.push(...resources);
   }
 
