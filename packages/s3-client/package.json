@@ -14,5 +14,12 @@
     "lint:fix": "eslint --fix .",
     "prepublishOnly": "cross-env NODE_ENV=production npm run build",
     "test": "jest"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1041.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.177"
   }
 }
