@@ -28,7 +28,7 @@ class S3Client {
     return buckets
       .map((bucket) => bucket.Name)
       .filter((name) => name != null)
-      .map((name) => new Bucket(this.s3, name!));
+      .map((name) => new Bucket(this.s3, name as string));
   }
 }
 
