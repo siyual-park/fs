@@ -4,9 +4,11 @@ import uniqid from "uniqid";
 import { Resource } from "@internal/test-helper";
 
 class MockBucket implements Resource {
-  readonly bucketName = uniqid();
+  readonly bucketName: string;
 
-  constructor(private readonly s3: AWS.S3) {}
+  constructor(private readonly s3: AWS.S3) {
+    this.bucketName = uniqid()
+  }
 
   async init(): Promise<void> {
     if (!(await this.existBucket())) {

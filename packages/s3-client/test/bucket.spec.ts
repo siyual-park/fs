@@ -21,7 +21,7 @@ beforeAll(async () => {
   await mockBucket.init();
 
   s3Client = new S3Client(mockServer.clientConfig);
-  bucket = await s3Client.bucket(mockBucket.bucketName);
+  bucket = await s3Client.getBucket(mockBucket.bucketName);
 });
 
 afterAll(async () => {

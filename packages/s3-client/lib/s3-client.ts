@@ -8,7 +8,7 @@ class S3Client {
     this.s3 = new S3(options);
   }
 
-  async bucket(name: string): Promise<Bucket> {
+  async getBucket(name: string): Promise<Bucket> {
     const { Buckets: buckets } = await this.listBuckets();
     const existsBucket =
       buckets?.some((bucket) => bucket.Name === name) ?? false;
