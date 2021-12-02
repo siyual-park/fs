@@ -18,7 +18,10 @@ class MockBucket implements Resource {
 
   async clear(): Promise<void> {
     if (await this.existBucket()) {
-      await this.s3.deleteBucket({ Bucket: this.bucketName }).promise();
+      try {
+        await this.s3.deleteBucket({ Bucket: this.bucketName }).promise();
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
     }
   }
 
