@@ -7,7 +7,7 @@ class MockBucket implements Resource {
   readonly bucketName: string;
 
   constructor(private readonly s3: AWS.S3) {
-    this.bucketName = uniqid()
+    this.bucketName = uniqid();
   }
 
   async init(): Promise<void> {

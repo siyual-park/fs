@@ -9,7 +9,7 @@ class S3Client {
   }
 
   async getBucket(name: string): Promise<Bucket> {
-    const { Buckets: buckets } = await this.listBuckets();
+    const { Buckets: buckets } = await this.s3.listBuckets().promise();
     const existsBucket =
       buckets?.some((bucket) => bucket.Name === name) ?? false;
     if (!existsBucket) {
@@ -19,8 +19,8 @@ class S3Client {
     return new Bucket(this.s3, name);
   }
 
-  async buckets(): Promise<Bucket[]> {
-    const { Buckets: buckets } = await this.listBuckets();
+  async listBuckets(): Promise<Bucket[]> {
+    const { Buckets: buckets } = await this.s3.listBuckets().promise();
     if (buckets == null) {
       return [];
     }
@@ -29,10 +29,6 @@ class S3Client {
       .map((bucket) => bucket.Name)
       .filter((name) => name != null)
       .map((name) => new Bucket(this.s3, name!));
-  }
-
-  private listBuckets(): Promise<S3.ListBucketsOutput> {
-    return this.s3.listBuckets().promise();
   }
 }
 
