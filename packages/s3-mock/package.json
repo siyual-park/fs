@@ -18,7 +18,7 @@
   "dependencies": {
     "aws-sdk": "^2.1041.0",
     "del": "^6.0.0",
-    "get-port": "^5.1.1",
+    "get-port": "^6.1.1",
     "make-dir": "^3.1.0",
     "s3rver": "^3.7.1",
     "uniqid": "^5.4.0"
